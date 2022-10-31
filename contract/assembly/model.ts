@@ -11,11 +11,13 @@ export class PartialTodo {
 @nearBindgen
 export class Todo {
   id: u32;
+  owner: string;
   task: string;
   done: bool;
 
   constructor(task: string) {
     this.id = math.hash32<string>(task);
+    this.owner = context.sender;
     this.task = task;
     this.done = false;
   }
@@ -40,7 +42,7 @@ export class Todo {
   //use Id to Update todo
   static findByIdAndUpdate(id: u32, partial: PartialTodo): Todo {
     const todo = this.findById(id);
-    
+    assert(todo.owner == context.sender, "You are not this task's owner");
     todo.task = partial.task;
     todo.done = partial.done;
     todos.set(id, todo);
@@ -50,6 +52,8 @@ export class Todo {
 
   //use Id to delete todo
   static findByIdAndDelete(id: u32): void {
+    const todo = this.findById(id);
+    assert(todo.owner == context.sender, "You are not this task's owner");
     todos.delete(id);
   }
 
