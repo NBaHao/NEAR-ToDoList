@@ -15,6 +15,7 @@ export function get(offset: u32, limit: u32 = 10): Todo[] {
 }
 
 export function update(id: u32, updates: PartialTodo): Todo {
+  assert(updates.creator.toString() == context.sender.toString(),"You don't have permission to edit sneaker");
   ContractPromiseBatch.create(updates.creator).transfer(context.attachedDeposit);
   return Todo.findByIdAndUpdate(id, updates);
 }
