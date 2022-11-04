@@ -2,6 +2,6 @@
 **LINK DEMO DAPP**: https://near-todolist.vercel.app.
 ## Description
 This is a simple dapp that can help manage to-dos
-## To run dapp on your local
-	1. Clone this repository
-	2. npm run clean-start
+## Run locally
+	git clone https://github.com/NBaHao/NEAR-ToDoList
+	npm run clean-start
