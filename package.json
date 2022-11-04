@@ -6,7 +6,7 @@
     "build": "cd contract && npm run build && mkdir -p ../out && rm -f ./out/hello_near.wasm && cp ./build/release/hello_near.wasm ../out/main.wasm",
     "deploy": "npm run build && near dev-deploy -f",
     "start": "npm run deploy && echo The app is starting! && env-cmd -f ./neardev/dev-account.env parcel frontend/index.html --open",
-    "clean-start": "rm -rf node_modules && npm install && rm -rf $TMPDIR/react* && npm start --reset-cache",
+    "clean-start": "rm -rf node_modules && npm install && npm --prefix ./frontend install ./frontend && rm -rf $TMPDIR/react* && npm start --reset-cache",
     "dev": "nodemon --watch contract -e ts --exec \"npm run start\"",
     "test": "npm run build && npm run test:unit && npm run test:integration",
     "test:unit": "cd contract && npm i && npm run test",
