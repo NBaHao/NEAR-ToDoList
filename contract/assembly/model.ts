@@ -1,28 +1,34 @@
-import { PersistentUnorderedMap, math } from "near-sdk-as";
+import { PersistentUnorderedMap, math, context } from "near-sdk-as";
 
 export const todos = new PersistentUnorderedMap<u32, Todo>("todos");
 
 @nearBindgen
 export class PartialTodo {
-  task: string;
+  name: string;
+  description:string;
+  creator:string;
   done: bool;
 }
 
 @nearBindgen
 export class Todo {
   id: u32;
-  task: string;
+  name: string;
+  description:string;
+  creator:string;
   done: bool;
 
-  constructor(task: string) {
-    this.id = math.hash32<string>(task);
-    this.task = task;
+  constructor(name: string, description:string, creator:string) {
+    this.id = math.hash32<string>(name);
+    this.name = name;
+    this.description = description;
+    this.creator = creator
     this.done = false;
   }
 
   //add a new todo into todos
-  static insert(task: string): Todo {
-    const todo = new Todo(task);
+  static insert(name: string, description:string): Todo {
+    const todo = new Todo(name, description, context.sender);
     todos.set(todo.id, todo);
     return todo;
   }
@@ -41,7 +47,7 @@ export class Todo {
   static findByIdAndUpdate(id: u32, partial: PartialTodo): Todo {
     const todo = this.findById(id);
     
-    todo.task = partial.task;
+    todo.name = partial.name;
     todo.done = partial.done;
     todos.set(id, todo);
 
